@@ -1,0 +1,19 @@
+from django.shortcuts import render
+
+from django.shortcuts import get_object_or_404
+
+
+def cart_summary(request):
+    return render(request,'cart/cart-summary.html')
+
+def cart_add(request):
+    pass
+
+def cart_delete(request):
+    pass
+
+def cart_update(request):
+    pass
+
+
+
