@@ -1,13 +1,21 @@
 from django.shortcuts import render
 from .models import Category,Product
 from django.shortcuts import get_object_or_404
+import random
 # Create your views here.
 
 def store(request):
 
     all_products =Product.objects.all()
-    context = {'my_products': all_products}
+    shuffled_products = random.sample(list(all_products),len(all_products))
+    context = {'my_products': shuffled_products}
     return render(request,'store/store.html',context=context)
+
+def all(request):
+
+    all_products =Product.objects.all()
+    context = {'my_products': all_products}
+    return render(request,'store/all.html',context=context)
 
 def categories(request):
     all_categories = Category.objects.all()

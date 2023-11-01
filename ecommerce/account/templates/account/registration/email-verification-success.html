@@ -1,0 +1,42 @@
+{% include "store/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+
+    body{
+background-color :grey;
+}
+
+</style>
+
+<body>
+    <br>
+    <div class='container bg-white shadow-md p-5 form_layout'>
+
+
+        <div class='text-center'>
+        <i class="fa fa-check fa-3x text-success" aria-hidden="true"></i>
+        <h3> You have ben successfully verified</h3>
+          <br>
+          <hr>
+                     
+          <a onclick="openLinkInNewTab()"  class="btn btn-primary my-2"> Go back to the website </a>
+        </div>
+          <script>
+            function openLinkInNewTab() {
+                
+                var url = "http://127.0.0.1:8000/";
+                window.open(url, '_blank');
+            }
+        </script>
+
+    </div>
+    <br>
+</body>
+
+
+
+{% endblock content %}

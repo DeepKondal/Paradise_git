@@ -1,7 +1,8 @@
 
+
 {% include "store/base.html" %}
 
-
+{% load mathfilters %}
 {% load static %}
 
 
@@ -12,26 +13,33 @@
     
     <div class="container">
       
-      <h1 class="h5"> Shopping cart </h1>
-
+      <h1 class="h4 fw-bold "> Shopping cart </h1>
+      
 	<hr>
       
+      {% for item in cart %}
+
+      {% with product=item.product %}
+      
+      
+      
+
       <br>
 
-      <div class="row mb-4 border product-item">
+      <div class="row mb-4 border product-item ">
         
         <div class="col-md-3 col-lg-2 order-md-first bg-light">
         
-            <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src=""> <!-- Product image -->
+            <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src="{{product.image.url}}"> <!-- Product image -->
         
         </div>
 
         
         <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
           
-          <a href="" class="text-decoration-none text-reset"> <!-- Product get absolute url -->
+          <a href="{{product.get_absolute_url}}" class="text-info text-decoration-none"> <!-- Product get absolute url -->
           
-            <h1 class="h5 pt-2"> <!-- Product title --> </h1>
+            <h1 class="h5 pt-2"> {{product.title}} <!-- Product title --> </h1>
           
           </a>
           
@@ -43,7 +51,7 @@
               
                 <div class="col-6"> Product </div>
               
-                <div class="col-6 text-end"><span class="h6 fw-bold">$ <!-- Product price --> </span></div>
+                <div class="col-6 text-end"><span class="h6 fw-bold">$ {{product.price}} <!-- Product price --> </span></div>
             
               </div>
             
@@ -55,11 +63,11 @@
                 
                 <div class="col-12">
                   
-                  <label for="select">Qty</label>
+                  <label for="select">Quantity</label>
 
                   &nbsp; 
                   
-                  <select id="">
+                  <select id="select{{product.id}}">
                   
                     <option selected>
                   
@@ -79,7 +87,7 @@
                   
                   <br> <br>
 
-                  <button type="button" id="update-button"
+                  <button type="button" data-index="{{product.id}}"
                     class="btn btn-primary btn-sm update-button">
                     Update
                   
@@ -87,16 +95,15 @@
                   
                   &nbsp;
 
-                  <button type="button" id="delete-button"
+                  <button type="button" data-index="{{product.id}}"
                     class="btn btn-danger btn-sm delete-button">
                     Delete
         
                   </button>
-        
-
                 </div>
-        
-            </div>
+                
+                <div class="h6 fw-bold col-12 text-end ">Item Total : $ {{product.price|mul:item.qty}} <!-- Product price --> </div>
+              </div>
         
             </div>
     
@@ -106,19 +113,87 @@
       
     </div>
       
+    {% endwith %}
 
+    {% endfor %}
 
-      <div class="col-12 text-end">
- 
-        <div class="h6 fw-bold"> Sub total: $ <div id="total" class="d-inline-flex"> <!-- cart.get_total --> </div></div>
- 
-      </div>
+      
  
 
     </div>
   
 
  </main>
+ <br><br><br><br><br>
+ <nav class="navbar fixed-bottom navbar-light bg-light">
+  <div class="col-12 text-end">
+    <div class="h6 fw-bold col-12 text-end "> Cart total:  <div id="total" class="d-inline-flex shadow p-2 bg-light rounded"> $ {{cart.get_total}}  </div>
+    &nbsp
+    &nbsp
+  </div>
+  </div>
+</nav>
+
+<script>
+//Delete button AJAX
+
+$(document).on('click','.delete-button',function(e){
+  e.preventDefault();
+  $.ajax({
+    type : 'POST',
+    url : '{%url "cart-delete"%}',
+    data : {
+        product_id : $(this).data('index'),
+        csrfmiddlewaretoken : "{{csrf_token}}",
+        action: 'post'
+
+    },
+    success : function(json){
+     
+      location.reload(true);
+     
+      document.getElementById("cart-qty").textContent = json.qty
+      document.getElementById("total").textContent = json.total
+    },
+    error: function(xhr,errmsg,err){
+
+    }
+  });
+})
+
+//Update button AJAX
+  
+$(document).on('click','.update-button',function(e){
+  e.preventDefault();
+  
+  var theproductid = $(this).data('index');
+  
+  $.ajax({
+
+    type : 'POST',
+    url : '{%url "cart-update"%}',
+    data : {
+        product_id : $(this).data('index'),
+        product_quantity: $('#select' + theproductid + ' option:selected').text(),
+        csrfmiddlewaretoken : '{{csrf_token}}',
+        action: 'post'
+
+    },
+    success : function(json){
+     
+      location.reload(true);
+     
+      document.getElementById("cart-qty").textContent = json.qty
+      document.getElementById("total").textContent = json.total
+    },
+    error: function(xhr,errmsg,err){
+
+    }
+  });
+})
+
+</script>
+
 
 
 

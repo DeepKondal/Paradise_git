@@ -1,0 +1,75 @@
+{% include "store/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+
+    body{
+background-color :grey;
+}
+
+</style>
+
+<body>
+    <br>
+    <div class='container bg-white shadow-md p-5 form_layout'>
+
+
+        <div class='text-center'>
+        
+        <h3> Verification link has been sent to your email</h3>
+          <br>
+          <hr>
+          
+          <i class="fa fa-envelope fa-3x" aria-hidden="true"></i>
+          <br> 
+            <cite title="Source Title">Please check your Email</cite>
+            <br><br>
+            
+          <a onclick="openLinkInNewTab()"  class="btn btn-primary my-2"> Go to Gmail </a>
+        </div>
+          <script>
+            function openLinkInNewTab() {
+                
+                var url = "https://mail.google.com/";
+                window.open(url, '_blank');
+            }
+        </script>
+
+    </div>
+    <br>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

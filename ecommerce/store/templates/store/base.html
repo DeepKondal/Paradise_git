@@ -23,7 +23,7 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
+        <link rel='stylesheet' href='{% static "css/style.css" %}'>
 
         <!-- JavaScript -->
 
@@ -47,12 +47,17 @@
     
 
 
-    <nav class="navbar navbar-expand-lg bg-primary justify-content-center" > 
+    <nav class="navbar navbar-expand-lg sticky-top bg-primary justify-content-center" > 
 
 
         <a class="navbar-brand main-heading text-white" href="{% url 'store' %}"> 
                 
-        &nbsp; &nbsp; PARADISE  
+        &nbsp; &nbsp;
+        <i class="fa fa-sun-o fa-1x" aria-hidden="true"></i>
+        &nbsp; 
+        
+        PARADISE  
+        
         
         </a>
 
@@ -88,7 +93,7 @@
 
                         <li>
                             
-                            <a class="dropdown-item" href="{% url 'store' %}"> All </a>
+                            <a class="dropdown-item" href="{% url 'all' %}"> All </a>
                         
                         </li>
                         {% for category in all_categories %}
@@ -112,34 +117,51 @@
 
         <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
             
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto ">
 
-
+                
                 <li class="nav-item">
             
-                    <a class="btn btn-alert navbar-btn text-white" type="button"  href="/"> Register </a>
+                    <a class="btn btn-alert navbar-btn text-white" type="button"  href="{% url 'register' %}"> Register </a>
 
                 </li>
-
+                &nbsp;
 
                 <li class="nav-item">
 
-                    <a class="btn btn-alert navbar-btn text-white" type="button"  href="/"> Login </a>
+                    <a class="btn btn-alert navbar-btn text-white" type="button"  href="{% url 'my-login' %}"> Login 
+                        <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    </a>
+                    
+                
 
                 </li>
+                &nbsp;&nbsp;&nbsp;
+                <li class="nav-item ">
 
-
-                &nbsp; &nbsp; &nbsp;
-
-
-                <li class="nav-item">
-
-                    <a type="button" role="button" href="{% url 'cart-summary' %}" class="btn btn-outline-secondary"> 
+                    <a type="button" role="button" href="{% url 'cart-summary' %}" class="btn btn-outline-primary shadow p-1 mb-1 bg-light rounded"> 
                     
 
 
                         <i class="fa fa-shopping-cart" aria-hidden="true"> </i>
+                        
+                        &nbsp;
+                        
+                        <div id="cart-qty" class ="d-inline-flex">
 
+                            {% with qty_amount=cart|length %}
+
+                                {% if qty_amount > 0 %}
+                                    {{qty_amount}}
+                                    {% else %}
+                                        0
+                                
+                                {% endif %}
+
+
+                            {% endwith %}
+
+                        </div>
 
                     </a>
 

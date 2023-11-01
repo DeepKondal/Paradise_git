@@ -12,7 +12,7 @@
 
             <div class="col-md-5 col-lg-5 order-md-first bg-light">
             
-                <img class="img-fluid mx-auto d-block" alt="Responsive image" src="{{product.image.url}}"> <!-- Product image -->
+                <img class="img-fluid mx-auto d-block" style="padding : 50px" alt="Responsive image" src="{{product.image.url}}"> <!-- Product image -->
             
             </div>
 
@@ -71,7 +71,7 @@
 
                             <div class="col-6 text-end">
                                 
-                                <button type="button" id="add-button" value="" class="btn btn-secondary btn-sm">
+                                <button type="button" id="add-button" value="{{product.id}}" class="btn btn-outline-success me-2">
                         
                                 Add to cart 
                             
@@ -95,5 +95,37 @@
     <br>
 
 </div>
+
+
+<script>
+
+$(document).on('click','#add-button',function(e){
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url : '{% url "cart-add" %}',
+        data : {
+
+            product_id : $('#add-button').val(),
+            product_quantity: $('#select option:selected').text(),
+            csrfmiddlewaretoken : '{{csrf_token}}',
+            action : 'post'
+            },
+            success : function(json){
+                //console.log(json)
+
+                document.getElementById('cart-qty').textContent = json.qty
+
+            },
+            error : function(xhr,errmsg,err){
+
+            }
+
+    });
+})
+
+
+
+</script>
 
 {% endblock %}
